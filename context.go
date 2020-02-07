@@ -11,7 +11,7 @@ import (
 	"math"
 	"strings"
 
-	"github.com/golang/freetype/raster"
+	"github.com/zaklaus/freetype/raster"
 	"golang.org/x/image/draw"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/basicfont"
