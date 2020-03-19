@@ -6,15 +6,15 @@
 
 ## Installation
 
-    go get -u github.com/fogleman/gg
+    go get -u github.com/zaklaus/gg
 
 Alternatively, you may use gopkg.in to grab a specific major-version:
 
-    go get -u gopkg.in/fogleman/gg.v1
+    go get -u gopkg.in/zaklaus/gg.v1
 
 ## Documentation
 
-https://godoc.org/github.com/fogleman/gg
+https://godoc.org/github.com/zaklaus/gg
 
 ## Hello, Circle!
 
@@ -23,7 +23,7 @@ Look how easy!
 ```go
 package main
 
-import "github.com/fogleman/gg"
+import "github.com/zaklaus/gg"
 
 func main() {
     dc := gg.NewContext(1000, 1000)
@@ -36,7 +36,7 @@ func main() {
 
 ## Examples
 
-There are [lots of examples](https://github.com/fogleman/gg/tree/master/examples) included. They're mostly for testing the code, but they're good for learning, too.
+There are [lots of examples](https://github.com/zaklaus/gg/tree/master/examples) included. They're mostly for testing the code, but they're good for learning, too.
 
 ![Examples](http://i.imgur.com/tMFoyzu.png)
 
@@ -201,7 +201,7 @@ See the output of this example below.
 ```go
 package main
 
-import "github.com/fogleman/gg"
+import "github.com/zaklaus/gg"
 
 func main() {
 	const S = 1024

@@ -11,7 +11,7 @@ import (
 	"math"
 	"strings"
 
-	"github.com/zaklaus/freetype/raster"
+	"github.com/golang/freetype/raster"
 	"golang.org/x/image/draw"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/basicfont"
@@ -798,16 +798,11 @@ func (dc *Context) MeasureMultilineString(s string, lineSpacing float64) (width,
 	height = float64(len(lines)) * dc.fontHeight * lineSpacing
 	height -= (lineSpacing - 1) * dc.fontHeight
 
-	d := &font.Drawer{
-		Face: dc.fontFace,
-	}
-
 	// max width from lines
 	for _, line := range lines {
-		adv := d.MeasureString(line)
-		currentWidth := float64(adv >> 6) // from gg.Context.MeasureString
-		if currentWidth > width {
-			width = currentWidth
+		adv, _ := dc.MeasureString(line)
+		if adv > width {
+			width = adv
 		}
 	}
 
@@ -817,11 +812,40 @@ func (dc *Context) MeasureMultilineString(s string, lineSpacing float64) (width,
 // MeasureString returns the rendered width and height of the specified text
 // given the current font face.
 func (dc *Context) MeasureString(s string) (w, h float64) {
-	d := &font.Drawer{
-		Face: dc.fontFace,
+	w, h, _, _, _, _ = dc.MeasureTextMetrics(s)
+	return
+}
+
+// MeasureTextMetrics retrieves font metrics for a given text.
+func (dc *Context) MeasureTextMetrics(s string) (w, h, asc, desc, fasc, fdesc float64) {
+	for x, c := range s {
+		runeC := rune(c)
+		bounds, adv, ok := dc.fontFace.GlyphBounds(runeC)
+
+		if ok {
+			w += unfix(adv)
+		}
+
+		if x < len(s)-1 {
+			kern := dc.fontFace.Kern(runeC, rune(s[x+1]))
+			w += unfix(kern)
+		}
+
+		if asc <= unfix(bounds.Max.Y) {
+			asc = unfix(bounds.Max.Y)
+		}
+
+		if desc > unfix(bounds.Min.Y) {
+			desc = unfix(bounds.Min.Y)
+		}
 	}
-	a := d.MeasureString(s)
-	return float64(a >> 6), dc.fontHeight
+
+	h = dc.fontHeight
+	fm := dc.fontFace.Metrics()
+	fasc = unfix(fm.Ascent)
+	fdesc = unfix(fm.Descent)
+
+	return
 }
 
 // WordWrap wraps the specified string to the given max width and current

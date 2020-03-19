@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/fogleman/gg"
-	"github.com/zaklaus/freetype/truetype"
+	"github.com/zaklaus/gg"
+	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font/gofont/goregular"
 )
 
